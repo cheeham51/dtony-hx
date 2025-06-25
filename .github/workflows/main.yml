@@ -40,7 +40,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }} .
-          docker tag ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.vars.outputs.tag }} ${{ vars.ECR_REPOSITORY_URI }}:latest
+          docker tag ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }} ${{ vars.ECR_REPOSITORY_URI }}:latest
           
       - name: Trivy scan
         uses: aquasecurity/trivy-action@0.28.0
@@ -53,5 +53,5 @@ jobs:
 
       - name: Push to ECR
         run: |
-          docker push ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.vars.outputs.tag }}
+          docker push ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
           docker push ${{ vars.ECR_REPOSITORY_URI }}:latest
