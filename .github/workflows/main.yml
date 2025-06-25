@@ -54,4 +54,4 @@ jobs:
       - name: Push to ECR
         run: |
           docker push ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
-          docker push ${{ vars.ECR_REPOSITORY_URI }}:latest
+          docker push ${{ vars.ECR_REPOSITORY_URI }}:latest 
