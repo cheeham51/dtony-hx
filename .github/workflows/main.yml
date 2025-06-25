@@ -69,5 +69,5 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: hx-app
-          image: ${{ steps.set-img-tag.outputs.tagged_image }}
+          image: ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
 
