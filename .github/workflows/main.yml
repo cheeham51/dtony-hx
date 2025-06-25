@@ -5,13 +5,27 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+      id-token: write
+      contents: read
+
 jobs:
-  build-and-scan:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
+          aws-region: ap-southeast-2
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -19,8 +33,9 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t simple-server:latest .
+          docker tag simple-server:latest ${{ vars.ECR_REPOSITORY_URI }}:latest
 
-      - name: Install Trivy scanner
+      - name: Trivy scan
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: simple-server:latest
@@ -28,3 +43,7 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
           severity: CRITICAL,HIGH
+          
+      - name: Push to ECR
+        run: |
+          docker push ${{ vars.ECR_REPOSITORY_URI }}:latest
