@@ -1,0 +1,17 @@
+{
+  "family": "hx-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "${ECS_EXEC_ROLE_ARN}",
+  "taskRoleArn": "${ECS_TASK_ROLE_ARN}",
+  "containerDefinitions": [
+    {
+      "name": "hx-app",
+      "image": "REPLACE_ME",
+      "essential": true,
+      "portMappings": [{ "containerPort": 80 }]
+    }
+  ]
+}

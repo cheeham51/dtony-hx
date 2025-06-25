@@ -10,7 +10,7 @@ permissions:
       contents: read
 
 jobs:
-  ci:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -54,4 +54,20 @@ jobs:
       - name: Push to ECR
         run: |
           docker push ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
-          docker push ${{ vars.ECR_REPOSITORY_URI }}:latest 
+          docker push ${{ vars.ECR_REPOSITORY_URI }}:latest
+      
+      - name: Prepare task definition
+        run: |
+          envsubst < task-definition.template.json > task-definition.json
+        env:
+          ECS_EXEC_ROLE_ARN: ${{ vars.ECS_EXEC_ROLE_ARN }}
+          ECS_TASK_ROLE_ARN: ${{ vars.ECS_TASK_ROLE_ARN }}
+ 
+      - name: Render task definition with image
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: hx-app
+          image: ${{ steps.set-img-tag.outputs.tagged_image }}
+
