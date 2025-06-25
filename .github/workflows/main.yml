@@ -70,4 +70,8 @@ jobs:
           task-definition: task-definition.json
           container-name: hx-app
           image: ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
+          
+      - name: Show rendered task definition
+        run: cat ${{ steps.render-task-def.outputs.task-definition }}
+
 
