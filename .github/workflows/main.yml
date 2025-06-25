@@ -1,0 +1,30 @@
+name: Main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t simple-server:latest .
+
+      - name: Install Trivy scanner
+        uses: aquasecurity/trivy-action@v0.16.1
+        with:
+          image-ref: simple-server:latest
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
