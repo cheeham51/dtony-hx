@@ -66,23 +66,6 @@ Infrastructure can evolve at its own pace:
 - Add support for blue/green, autoscaling, etc
 - Without needing every app to update their repo
 
-## 🚀 How It Gets Deployed
-
-This application is containerized and deployed to **AWS ECS Fargate** using **GitHub Actions**.
-
-### 🔁 CI/CD Workflow
-
-The GitHub Actions workflow does the following on push to `main`:
-
-1. **Build** Docker image using the latest Git commit SHA as the tag
-2. **Scan** the image with Trivy for CRITICAL/HIGH vulnerabilities
-3. **Push** the image to Amazon ECR
-4. **Render** the ECS Task Definition by replacing template variables
-5. **Deploy** the new task definition to an ECS service (`hx-cluster` > `hx-service`)
-6. **Wait** for service stability
-
----
-
 ## 🧱 Infrastructure
 
 > ℹ️ **Note:** Infrastructure is provisioned in a **separate repo** using Terraform.  
@@ -96,6 +79,26 @@ This app assumes the following are already created:
 
 ---
 
+### 🔁 CI/CD Workflow
+
+The GitHub Actions workflow does the following on push to `main`:
+
+1. **Build** Docker image using the latest Git commit SHA as the tag
+2. **Scan** the image with Trivy for CRITICAL/HIGH vulnerabilities
+3. **Push** the image to Amazon ECR
+4. **Render** the ECS Task Definition by replacing template variables
+5. **Deploy** the new task definition to an ECS service (`hx-cluster` > `hx-service`)
+6. **Wait** for service stability
+
+![CICD Diagram](cicd.png)
+
+---
+
+## 🚀 How It Gets Deployed
+
+This application is containerized and deployed to **AWS ECS Fargate** using **GitHub Actions**.
+
+---
 ## 📦 Project Structure
 
 ```
