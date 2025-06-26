@@ -1,5 +1,5 @@
 {
-  "family": "hx-task",
+  "family": "hx-app-task",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
