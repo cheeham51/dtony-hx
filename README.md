@@ -2,6 +2,8 @@
 
 A minimal Python HTTP server that responds to basic GET requests.
 
+## 🔗 Check out the [live demo](http://hx-app-alb-2127162870.ap-southeast-2.elb.amazonaws.com/hello).
+
 ## 🛠 What It Does
 
 This app serves a simple HTTP server using Python’s `http.server` module.
