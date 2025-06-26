@@ -6,8 +6,8 @@ class SimpleHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/plain")
             self.end_headers()
-            self.wfile.write(b"OK")
-        if self.path == "/hello":
+            self.wfile.write(b"Home")
+        elif self.path == "/hello":
             self.send_response(200)
             self.send_header("Content-type", "text/plain")
             self.end_headers()
