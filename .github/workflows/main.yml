@@ -70,8 +70,17 @@ jobs:
           task-definition: task-definition.json
           container-name: hx-app
           image: ${{ vars.ECR_REPOSITORY_URI }}:${{ steps.set-img-tag.outputs.tag }}
-          
+
       - name: Show rendered task definition
         run: cat ${{ steps.render-task-def.outputs.task-definition }}
+      
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          service: hx-service
+          cluster: hx-cluster
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          wait-for-service-stability: true
+
 
 
