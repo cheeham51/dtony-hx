@@ -77,6 +77,7 @@ This app assumes the following are already created:
 - ALB + Target Group + Listener
 - VPC, Subnets, and Security Groups
 
+![Infra Diagram](infra.png)
 ---
 
 ### 🔁 CI/CD Workflow
